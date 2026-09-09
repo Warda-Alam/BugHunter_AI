@@ -6,6 +6,17 @@ export interface PageSpeedScores {
   screenshot: string | null;
 }
 
+export type SuggestionSeverity = 'critical' | 'warning' | 'info';
+
+export interface Suggestion {
+  id: string;
+  severity: SuggestionSeverity;
+  title: string;
+  problem: string;
+  fix: string;
+  codeExample?: string;
+}
+
 export interface AuditResult {
   url: string;
   pagespeed: {
@@ -22,4 +33,28 @@ export interface AuditResult {
   };
   https: boolean;
   mobileFriendly: boolean;
+}
+
+export interface CompareResult {
+  yours: AuditResult;
+  competitor: AuditResult;
+}
+
+export type MetricKey = 'performance' | 'accessibility' | 'bestPractices' | 'seo';
+
+export interface MetricComparison {
+  key: MetricKey;
+  label: string;
+  yours: number;
+  theirs: number;
+  diff: number;
+}
+
+export interface CompareSummary {
+  yoursOverall: number;
+  theirsOverall: number;
+  yoursGrade: string;
+  theirsGrade: string;
+  metrics: MetricComparison[];
+  insight: string;
 }

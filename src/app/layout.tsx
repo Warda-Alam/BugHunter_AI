@@ -1,12 +1,14 @@
+import './globals.css';
+
 export const metadata = {
-  title: 'Website QA Audit Tool',
-  description: 'Audit website performance, SEO, accessibility, and best practices.',
+  title: 'BugHunter AI — Website QA Audit',
+  description: 'Analyze performance, SEO, accessibility, and best practices in one click.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="antialiased">
-      <body className="min-h-screen">{children}</body>
+      <body className="min-h-screen font-sans">{children}</body>
     </html>
   );
 }

@@ -3,12 +3,16 @@
 interface Props {
   score: number;
   label: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
-export default function ScoreGauge({ score, label }: Props) {
-  const radius = 26;
+export default function ScoreGauge({ score, label, size = 'md' }: Props) {
+  const dimensions = { sm: 56, md: 72, lg: 96 };
+  const dim = dimensions[size];
+  const radius = (dim / 2) - 6;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
+  const center = dim / 2;
 
   const colorClass =
     score >= 90 ? 'text-emerald-600 dark:text-emerald-400' :
@@ -20,30 +24,34 @@ export default function ScoreGauge({ score, label }: Props) {
     score >= 50 ? 'stroke-amber-500 dark:stroke-amber-400' :
     'stroke-red-500 dark:stroke-red-400';
 
+  const textSize = size === 'lg' ? 'text-2xl' : size === 'md' ? 'text-lg' : 'text-sm';
+
   return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="relative w-16 h-16">
-        <svg className="w-full h-full -rotate-90" viewBox="0 0 64 64">
+    <div className="flex flex-col items-center gap-2.5">
+      <div className="relative" style={{ width: dim, height: dim }}>
+        <svg className="w-full h-full -rotate-90" viewBox={`0 0 ${dim} ${dim}`}>
           <circle
-            cx="32" cy="32" r={radius}
-            className="fill-none stroke-gray-200 dark:stroke-gray-700"
-            strokeWidth="6"
+            cx={center} cy={center} r={radius}
+            className="fill-none stroke-zinc-200 dark:stroke-zinc-700"
+            strokeWidth="5"
           />
           <circle
-            cx="32" cy="32" r={radius}
+            cx={center} cy={center} r={radius}
             className={`fill-none ${strokeClass}`}
-            strokeWidth="6"
+            strokeWidth="5"
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
-            style={{ transition: 'stroke-dashoffset 0.6s ease-out' }}
+            style={{ transition: 'stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1)' }}
           />
         </svg>
-        <span className={`absolute inset-0 flex items-center justify-center text-lg font-medium tabular-nums ${colorClass}`}>
+        <span className={`absolute inset-0 flex items-center justify-center font-semibold tabular-nums ${textSize} ${colorClass}`}>
           {score}
         </span>
       </div>
-      <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{label}</span>
+      {label && (
+        <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium tracking-wide">{label}</span>
+      )}
     </div>
   );
 }

@@ -1,33 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: 250 250 252;
+    --foreground: 15 23 42;
+    --card: 255 255 255;
+    --card-border: 226 232 240;
+    --muted: 100 116 139;
+    --accent: 16 185 129;
+    --accent-glow: 16 185 129 / 0.15;
+  }
+
+  .dark {
+    --background: 9 9 11;
+    --foreground: 250 250 250;
+    --card: 24 24 27;
+    --card-border: 39 39 42;
+    --muted: 161 161 170;
+    --accent: 52 211 153;
+    --accent-glow: 52 211 153 / 0.12;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))] antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgb(var(--accent-glow)), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(99, 102, 241, 0.06), transparent);
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgb(var(--accent-glow)), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(99, 102, 241, 0.08), transparent);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .glass-card {
+    @apply bg-[rgb(var(--card))] border border-[rgb(var(--card-border))] rounded-2xl;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .dark .glass-card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm
+           bg-brand-600 text-white
+           hover:bg-brand-500 active:bg-brand-700
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-brand-600
+           transition-all duration-200 shadow-sm hover:shadow-glow;
+  }
+
+  .input-field {
+    @apply w-full pl-11 pr-4 py-3.5 rounded-xl
+           border border-[rgb(var(--card-border))] bg-[rgb(var(--card))]
+           text-[rgb(var(--foreground))] placeholder:text-[rgb(var(--muted))]
+           focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500
+           transition-all duration-200;
+  }
+
+  .badge-success {
+    @apply inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full
+           bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400;
+  }
+
+  .badge-warning {
+    @apply inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full
+           bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400;
+  }
+
+  .badge-error {
+    @apply inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full
+           bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-400;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-zinc-200 dark:bg-zinc-800 rounded-lg;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
 }
